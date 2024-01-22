@@ -1,3 +1,6 @@
+"""
+  Represents a User. Contains the users unique login email, as well as its password.
+"""
 class User < ApplicationRecord
 
   enum role: [:admin, :organization]

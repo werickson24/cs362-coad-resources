@@ -1,3 +1,7 @@
+"""
+  A class that holds the metadata for a Region. Contains information such as the regions unique name.
+  It has many tickets.
+"""
 class Region < ApplicationRecord
 
   has_many :tickets
