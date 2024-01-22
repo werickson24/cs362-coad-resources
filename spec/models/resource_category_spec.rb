@@ -6,4 +6,9 @@ RSpec.describe ResourceCategory, type: :model do
     ResourceCategory.new
   end
 
+  it "has a name" do
+    resourceCategory = ResourceCategory.new
+    expect(resourceCategory).to respond_to(:name)
+  end
+
 end
