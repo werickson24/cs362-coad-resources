@@ -1,3 +1,8 @@
+"""
+  A Class that represents the metadata of an Organization. Some of this data includes an 
+  organizations unique name, unique email, as well as its submission status.
+  An Organization has many users, tickets, and resource_categories.
+"""
 class Organization < ApplicationRecord
 
   attr_accessor :agreement_one, :agreement_two, :agreement_three, :agreement_four, :agreement_five, :agreement_six, :agreement_seven, :agreement_eight

@@ -1,3 +1,7 @@
+"""
+  A class that holds metadata on a resource category. Contains data such as the resources unique name.
+  It belongs to organizations, and has many tickets. 
+"""
 class ResourceCategory < ApplicationRecord
 
   has_and_belongs_to_many :organizations

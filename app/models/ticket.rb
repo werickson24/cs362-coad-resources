@@ -1,3 +1,7 @@
+"""
+  Represents the metadata on a Ticket. Contains information such as the name, and phone number on the ticket
+  as well as about the region and resource category.
+"""
 class Ticket < ApplicationRecord
 
   belongs_to :region
