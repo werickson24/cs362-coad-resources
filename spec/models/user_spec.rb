@@ -1,4 +1,4 @@
-require 'rails_helper'
+﻿require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
@@ -15,5 +15,7 @@ RSpec.describe User, type: :model do
     user = User.new
     expect(user).to respond_to(:role)
   end
+
+  it { should belong_to(:organization)}
 
 end
