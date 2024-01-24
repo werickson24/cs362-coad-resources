@@ -29,12 +29,17 @@ RSpec.describe Organization, type: :model do
 
   it "has a secondary_name" do
     organization = Organization.new
-    expect(organization).to respond_to(:primary_name)
+    expect(organization).to respond_to(:secondary_name)
   end
 
   it "has a secondary_phone" do
     organization = Organization.new
-    expect(organization).to respond_to(:primary_name)
+    expect(organization).to respond_to(:secondary_phone)
+  end
+
+  it "has a description" do
+    organization = Organization.new
+    expect(organization).to respond_to(:description)
   end
 
 
