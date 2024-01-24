@@ -40,15 +40,15 @@ RSpec.describe Organization, type: :model do
     expect(organization).to respond_to(:rejection_reason)
   end
 
-  it "has liability_insurance"
+  it "has liability_insurance" do
     expect(organization).to respond_to(:liability_insurance)
   end
 
-  it "has a title"
+  it "has a title" do
     expect(organization).to respond_to(:title)
   end
 
-  it "has transportation"
+  it "has transportation" do
     expect(organization).to respond_to(:transportation)
   end
 
