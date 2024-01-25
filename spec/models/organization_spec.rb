@@ -1,4 +1,4 @@
-require 'rails_helper'
+﻿require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
 
@@ -52,4 +52,63 @@ RSpec.describe Organization, type: :model do
     expect(organization).to respond_to(:transportation)
   end
 
+  # unknown test for attr_accessor
+
+  # enum tests
+
+  it do
+    should define_enum_for(:status).
+      with_values([:approved, :submitted, :rejected, :locked])
+  end
+
+  it do
+    should define_enum_for(:transportation).
+      with_values([:yes, :no, :maybe])
+  end
+
+  # unknown test for after initialze
+
+  # has tests
+
+  it {should have_many(:users)}
+
+  it {should have_many(:tickets)}
+
+  it { should have_and_belong_to_many(:resource_categories) }
+
+  # validates tests
+
+  it { should validate_presence_of(:email)}
+  it { should validate_presence_of(:name)}
+  it { should validate_presence_of(:phone)}
+  it { should validate_presence_of(:status)}
+  it { should validate_presence_of(:primary_name)}
+  it { should validate_presence_of(:secondary_name)}
+  it { should validate_presence_of(:secondary_phone)}
+
+  it do
+    should validate_length_of(:email).
+      is_at_least(1).
+      is_at_most(255).
+      on(:create)
+  end
+
+  # unknown test for validates
+
+  it { should validate_uniqueness_of(:email).case_insensitive }
+
+  it do
+    should validate_length_of(:name).
+      is_at_least(1).
+      is_at_most(255).
+      on(:create)
+  end
+
+  it { should validate_uniqueness_of(:name).case_insensitive }
+
+  it do
+    should validate_length_of(:description).
+      is_at_most(1020).
+      on(:create)
+  end
 end
