@@ -16,6 +16,14 @@ RSpec.describe User, type: :model do
     expect(user).to respond_to(:role)
   end
 
-  it { should belong_to(:organization)}
+  # enum test
+  it do
+    should define_enum_for(:role).
+      with_values([:admin, :organization])
+  end
+
+  # belongs_to tests
+  it { should belong_to(:organization).optional}
+
 
 end
