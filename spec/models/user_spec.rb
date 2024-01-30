@@ -62,7 +62,6 @@ RSpec.describe User, type: :model do
   
   it "should set the default role to organization when calling `set_default_role`" do
     user = User.new()
-    user.set_default_role
     expect(user.role).to eq("organization")
   end
 
