@@ -59,4 +59,26 @@ RSpec.describe Ticket, type: :model do
 
   # unknown test for scope
 
+
+  # --- Function Tests ---
+  it "open?" do
+    ticket1 = Ticket.new(closed: false)
+    ticket2 = Ticket.new(closed: true)
+    expect(ticket1.open?).to eq(true)
+    expect(ticket2.open?).to eq(false)
+  end
+
+  it "captured?" do
+    organization = Organization.new()
+    ticket1 = Ticket.new()
+    ticket2 = Ticket.new(organization: organization)
+    expect(ticket1.captured?).to eq(false)
+    expect(ticket2.captured?).to eq(true)
+  end
+
+  it "to_s" do
+    ticket = Ticket.new(id: 1)
+    expect(ticket.to_s).to eq("Ticket 1")
+  end
+
 end
