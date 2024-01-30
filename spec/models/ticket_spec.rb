@@ -61,14 +61,14 @@ RSpec.describe Ticket, type: :model do
 
 
   # --- Function Tests ---
-  it "open?" do
+  it "should tell you if the ticket is open or not from function `open?`" do
     ticket1 = Ticket.new(closed: false)
     ticket2 = Ticket.new(closed: true)
     expect(ticket1.open?).to eq(true)
     expect(ticket2.open?).to eq(false)
   end
 
-  it "captured?" do
+  it "should tell you if the ticket is connected to an organization from function `captured?`" do
     organization = Organization.new()
     ticket1 = Ticket.new()
     ticket2 = Ticket.new(organization: organization)
@@ -76,7 +76,7 @@ RSpec.describe Ticket, type: :model do
     expect(ticket2.captured?).to eq(true)
   end
 
-  it "to_s" do
+  it "should give you the correct name of the ticket from function `to_s`" do
     ticket = Ticket.new(id: 1)
     expect(ticket.to_s).to eq("Ticket 1")
   end
