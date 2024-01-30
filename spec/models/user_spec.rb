@@ -58,4 +58,17 @@ RSpec.describe User, type: :model do
       on(:create)
   end
 
+  # --- Function Tests ---
+  
+  it "should set the default role to organization when calling `set_default_role`" do
+    user = User.new()
+    user.set_default_role
+    expect(user.role).to eq("organization")
+  end
+
+  it "should have the correct email from function `to_s`" do
+    user = User.new(email: "test@example.com")
+    expect(user.to_s).to eq("test@example.com")
+  end
+
 end
