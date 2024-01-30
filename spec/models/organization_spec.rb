@@ -111,4 +111,30 @@ RSpec.describe Organization, type: :model do
       is_at_most(1020).
       on(:create)
   end
+  
+
+  # Testing functions
+
+  it "has the name 'test-name'" do
+    organization = Organization.new(name: 'test-name')
+    expect(organization.to_s).to eq('test-name')
+  end
+
+  it "changes status to 'approved'" do
+    organization = Organization.new()
+    organization.approve
+    expect(organization.status).to eq('approved')
+  end
+
+  it "changes status to 'rejected'" do
+    organization = Organization.new()
+    organization.reject
+    expect(organization.status).to eq('rejected')
+  end
+  
+  it "has a default status of 'submitted'" do
+    organization = Organization.new()
+    expect(organization.status).to eq('submitted')
+  end
+
 end
