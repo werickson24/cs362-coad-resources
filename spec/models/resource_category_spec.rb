@@ -37,4 +37,33 @@ RSpec.describe ResourceCategory, type: :model do
 
   # unknown test for scope
 
+
+  # ---- Function Test -----
+  it "will gives the correct name for function to_s" do
+    resCat = ResourceCategory.new(name: 'test-name')
+    expect(resCat.to_s).to eq('test-name')
+  end
+
+  it "will give the correct status when the function activate is called" do
+    resCat = ResourceCategory.new()
+    resCat.activate
+    expect(resCat.active).to eq(true)
+  end
+
+  it "will give the correct status when the function deactivate is called" do
+    resCat = ResourceCategory.new()
+    resCat.deactivate
+    expect(resCat.active).to eq(false)
+  end
+
+  it "will tell you if its deactivated when the function inactive? is called" do
+    resCat = ResourceCategory.new()
+    expect(resCat.inactive?).to eq(false)
+  end
+
+  it "has the name 'Unspecified' when an unspecified Resource Category is made" do
+    unspecResCat = ResourceCategory.unspecified
+    expect(unspecResCat.name).to eq("Unspecified")
+  end
+
 end
