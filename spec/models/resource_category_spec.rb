@@ -66,4 +66,25 @@ RSpec.describe ResourceCategory, type: :model do
     expect(unspecResCat.name).to eq("Unspecified")
   end
 
+  # ========== Scope Tests ================
+
+  describe "Scope tests for if the resource category is active or not" do
+    it ".active" do
+      resCatAct = ResourceCategory.create!(name: "Active", active:true)
+      resCatInact = ResourceCategory.create!(name: "Inactive", active:false)
+
+      expect(ResourceCategory.active).to include(resCatAct)
+      expect(ResourceCategory.active).not_to include(resCatInact)
+
+    end
+
+    it ".inactive" do
+      resCatAct = ResourceCategory.create!(name: "Active", active:true)
+      resCatInact = ResourceCategory.create!(name: "Inactive", active:false)
+
+      expect(ResourceCategory.inactive).to include(resCatInact)
+      expect(ResourceCategory.inactive).not_to include(resCatAct)
+    end
+  end
+
 end
