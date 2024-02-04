@@ -2,11 +2,8 @@
 
 RSpec.describe ResourceCategory, type: :model do
 
-  it "exists" do
-    ResourceCategory.new
-  end
 
-  let(:resourceCategory) { ResourceCategory.new }
+  let(:resourceCategory) { build(:resource_category, name: 'test-name') }
 
   it "has a name" do
     expect(resourceCategory).to respond_to(:name)
@@ -40,25 +37,21 @@ RSpec.describe ResourceCategory, type: :model do
 
   # ---- Function Test -----
   it "will gives the correct name for function to_s" do
-    resCat = ResourceCategory.new(name: 'test-name')
-    expect(resCat.to_s).to eq('test-name')
+    expect(resourceCategory.to_s).to eq('test-name')
   end
 
   it "will give the correct status when the function activate is called" do
-    resCat = ResourceCategory.new()
-    resCat.activate
-    expect(resCat.active).to eq(true)
+    resourceCategory.activate
+    expect(resourceCategory.active).to eq(true)
   end
 
   it "will give the correct status when the function deactivate is called" do
-    resCat = ResourceCategory.new()
-    resCat.deactivate
-    expect(resCat.active).to eq(false)
+    resourceCategory.deactivate
+    expect(resourceCategory.active).to eq(false)
   end
 
   it "will tell you if its deactivated when the function inactive? is called" do
-    resCat = ResourceCategory.new()
-    expect(resCat.inactive?).to eq(false)
+    expect(resourceCategory.inactive?).to eq(false)
   end
 
   it "has the name 'Unspecified' when an unspecified Resource Category is made" do
@@ -67,21 +60,16 @@ RSpec.describe ResourceCategory, type: :model do
   end
 
   # ========== Scope Tests ================
-
+  let(:resCatAct) {create(:resource_category, active: true) }
+  let(:resCatInact) {create(:resource_category, active: false)}
+  
   describe "Scope tests for if the resource category is active or not" do
     it ".active" do
-      resCatAct = ResourceCategory.create!(name: "Active", active:true)
-      resCatInact = ResourceCategory.create!(name: "Inactive", active:false)
-
       expect(ResourceCategory.active).to include(resCatAct)
       expect(ResourceCategory.active).not_to include(resCatInact)
-
     end
 
     it ".inactive" do
-      resCatAct = ResourceCategory.create!(name: "Active", active:true)
-      resCatInact = ResourceCategory.create!(name: "Inactive", active:false)
-
       expect(ResourceCategory.inactive).to include(resCatInact)
       expect(ResourceCategory.inactive).not_to include(resCatAct)
     end

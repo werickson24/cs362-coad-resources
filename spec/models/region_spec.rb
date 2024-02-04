@@ -2,20 +2,12 @@
 
 RSpec.describe Region, type: :model do
 
-  it "exists" do
-    Region.new
-  end
+  let (:region) {build(:region, name: 'test-name')}
 
   it "has a name" do
-    region = Region.new
     expect(region).to respond_to(:name)
   end
 
-  it "has a string representation that is its name" do
-    name = 'Mt. Hood'
-    region = Region.new(name: name)
-    result = region.to_s
-  end
 
   # has tests
 
@@ -36,7 +28,6 @@ RSpec.describe Region, type: :model do
 
   # --- Testing Functions ---
   it "has the correct name from to_s function" do
-    region = Region.new(name: 'test-name')
     expect(region.to_s).to eq('test-name')
   end
 

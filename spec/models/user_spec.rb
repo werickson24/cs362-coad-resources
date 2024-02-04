@@ -2,17 +2,13 @@
 
 RSpec.describe User, type: :model do
 
-  it "exists" do
-    User.new
-  end
+  let(:user){build(:user, email: "test@example.com")}
 
   it "has a email" do
-    user = User.new
     expect(user).to respond_to(:email)
   end
 
   it "has a role" do
-    user = User.new
     expect(user).to respond_to(:role)
   end
 
@@ -58,15 +54,13 @@ RSpec.describe User, type: :model do
       on(:create)
   end
 
+
   # --- Function Tests ---
-  
   it "should set the default role to organization when calling `set_default_role`" do
-    user = User.new()
     expect(user.role).to eq("organization")
   end
 
   it "should have the correct email from function `to_s`" do
-    user = User.new(email: "test@example.com")
     expect(user.to_s).to eq("test@example.com")
   end
 

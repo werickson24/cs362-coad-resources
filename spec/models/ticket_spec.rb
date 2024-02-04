@@ -2,27 +2,21 @@
 
 RSpec.describe Ticket, type: :model do
 
-  it "exists" do
-    Ticket.new
-  end
+  let(:ticket) { build(:ticket) }
 
   it "has a name" do
-    ticket = Ticket.new
     expect(ticket).to respond_to(:name)
   end
 
   it "has a phone" do
-    ticket = Ticket.new
     expect(ticket).to respond_to(:phone)
   end
 
   it "has a region_id" do
-    ticket = Ticket.new
     expect(ticket).to respond_to(:region_id)
   end
 
   it "has a resource_category_id" do
-    ticket = Ticket.new
     expect(ticket).to respond_to(:resource_category_id)
   end
 
@@ -61,152 +55,119 @@ RSpec.describe Ticket, type: :model do
 
 
   # --- Function Tests ---
+
   it "should tell you if the ticket is open or not from function `open?`" do
-    ticket1 = Ticket.new(closed: false)
-    ticket2 = Ticket.new(closed: true)
-    expect(ticket1.open?).to eq(true)
-    expect(ticket2.open?).to eq(false)
+    ticketOpen = build(:ticket, closed:false)
+    ticketClosed = build(:ticket, closed:true)
+    expect(ticketOpen.open?).to eq(true)
+    expect(ticketClosed.open?).to eq(false)
   end
 
   it "should tell you if the ticket is connected to an organization from function `captured?`" do
-    organization = Organization.new()
-    ticket1 = Ticket.new()
-    ticket2 = Ticket.new(organization: organization)
-    expect(ticket1.captured?).to eq(false)
-    expect(ticket2.captured?).to eq(true)
+    ticketNoOrg = build(:ticket, organization: nil)
+    ticketOrg = build(:ticket)
+    expect(ticketNoOrg.captured?).to eq(false)
+    expect(ticketOrg.captured?).to eq(true)
   end
 
   it "should give you the correct name of the ticket from function `to_s`" do
-    ticket = Ticket.new(id: 1)
-    expect(ticket.to_s).to eq("Ticket 1")
+    ticket1 = build(:ticket, id:1)
+    expect(ticket1.to_s).to eq("Ticket 1")
   end
 
 
   # --- Scope Tests ---
+
+  let(:ticketOpenOrg) {create(:ticket, closed:false)}
+  let(:ticketOpenNoOrg) {create(:ticket, closed:false, organization: nil)}
+
+  let(:ticketClosedOrg) {create(:ticket, closed:true)}
+  let(:ticketClosedNoOrg) {create(:ticket, closed:true, organization: nil)}
+
   describe 'the status of the Ticket, open or closed' do
 
     it ".open" do
-      region = Region.create! :name => "testRegion"
-      resourceCategory = ResourceCategory.create! :name => "testCategory"
-  
-      ticketOpen = Ticket.create! :closed => false, :organization_id => nil, :name => "TicketOpen", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      ticketClosed = Ticket.create! :closed => true, :organization_id => nil, :name => "TicketClosed", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      
-      expect(Ticket.open).to include(ticketOpen)
-      expect(Ticket.open).not_to include(ticketClosed)
+      expect(Ticket.open).to include(ticketOpenNoOrg)
+
+      expect(Ticket.open).not_to include(ticketOpenOrg)
+      expect(Ticket.open).not_to include(ticketClosedOrg)
+      expect(Ticket.open).not_to include(ticketClosedNoOrg)
     end
 
     it ".closed" do
-      region = Region.create! :name => "testRegion"
-      resourceCategory = ResourceCategory.create! :name => "testCategory"
-  
-      ticketOpen = Ticket.create! :closed => false, :organization_id => nil, :name => "TicketOpen", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      ticketClosed = Ticket.create! :closed => true, :organization_id => nil, :name => "TicketClosed", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
 
-      expect(Ticket.closed).to include(ticketClosed)
-      expect(Ticket.closed).not_to include(ticketOpen)
+      expect(Ticket.closed).to include(ticketClosedOrg)
+      expect(Ticket.closed).to include(ticketClosedNoOrg)
+
+      expect(Ticket.closed).not_to include(ticketOpenOrg)
+      expect(Ticket.closed).not_to include(ticketOpenNoOrg)
     end
   end
 
   describe 'dealing with the organization objects in scope' do
     it ".all_organization" do
-
-      # ------- Needed Objects to create Objects for testing --------
-      region = Region.create! :name => "testRegion"
-      resourceCategory = ResourceCategory.create! :name => "testCategory"
-      # ------------------------------------------------------------
-      
-      # ------- Objects for Testing ------------
-      organization1 = Organization.create!(email: "testEmail@example.com", name: "testOrg1", phone:"+41 44 111 22 33", status: :approved, primary_name: "TestPrimName", secondary_name: "TestSecName", secondary_phone: '+41 44 111 22 32')
-
-      ticketOpenOrg = Ticket.create! :closed => false, :organization_id => organization1.id, :name => "TicketOpen", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      ticketOpenNoOrg = Ticket.create! :closed => false, :organization_id => nil, :name => "TicketOpen", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      ticketClosedOrg = Ticket.create! :closed => true, :organization_id => organization1.id, :name => "TicketClosed", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      ticketClosedNoOrg = Ticket.create! :closed => true, :organization_id => nil, :name => "TicketClosed", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      # -----------------------------------------
-
-
-      # Pass Test
       expect(Ticket.all_organization).to include(ticketOpenOrg)
 
-      # Fail Tests
       expect(Ticket.all_organization).not_to include(ticketOpenNoOrg)
       expect(Ticket.all_organization).not_to include(ticketClosedOrg)
       expect(Ticket.all_organization).not_to include(ticketClosedNoOrg)
       
     end
 
-
+    let(:orgToPass){create(:organization, id: 1)}
+    let(:ticketOpenPassOrg){create(:ticket, closed:false, organization_id: orgToPass.id)}
+    let(:ticketClosedPassOrg){create(:ticket, closed:true, organization_id: orgToPass.id)}
+    
     it ".organization" do
-      # ------- Needed Objects to create Objects for testing --------
-      region = Region.create! :name => "testRegion"
-      resourceCategory = ResourceCategory.create! :name => "testCategory"
-      # -------------------------------------------------------------
-      
-      # ------- Objects for Testing ------------
-      organization1 = Organization.create!(email: "testEmail@example.com", name: "testOrg1", phone:"+41 44 111 22 33", status: :approved, primary_name: "TestPrimName", secondary_name: "TestSecName", secondary_phone: '+41 44 111 22 32')
-      ticketOpenOrg = Ticket.create! :closed => false, :organization_id => organization1.id, :name => "TicketOpen", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      ticketClosedOrg = Ticket.create! :closed => true, :organization_id => organization1.id, :name => "TicketClosed", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      # ----------------------------------------
 
-      result = Ticket.organization(organization1.id)
-      expect(result).to include(ticketOpenOrg)
-      expect(result).not_to include(ticketClosedOrg)
+      orgsWithID = Ticket.organization(orgToPass.id)
+      expect(orgsWithID).to include(ticketOpenPassOrg)
+
+      # Either Closed or have a different/no Organization
+      expect(orgsWithID).not_to include(ticketClosedPassOrg)
+      expect(orgsWithID).not_to include(ticketClosedNoOrg)
+      expect(orgsWithID).not_to include(ticketClosedOrg)
+      expect(orgsWithID).not_to include(ticketOpenNoOrg)
+      expect(orgsWithID).not_to include(ticketOpenOrg)
+      
     end
 
 
     it "closed_organization" do
-      # .------- Needed Objects to create Objects for testing --------.
-      region = Region.create! :name => "testRegion"
-      resourceCategory = ResourceCategory.create! :name => "testCategory"
-      # '-------------------------------------------------------------'
+    
+      orgsWithID = Ticket.closed_organization(orgToPass.id)
+      expect(orgsWithID).to include(ticketClosedPassOrg)
       
-      # ------- Objects for Testing ------------
-      organization1 = Organization.create!(email: "testEmail@example.com", name: "testOrg1", phone:"+41 44 111 22 33", status: :approved, primary_name: "TestPrimName", secondary_name: "TestSecName", secondary_phone: '+41 44 111 22 32')
-      ticketOpenOrg = Ticket.create! :closed => false, :organization_id => organization1.id, :name => "TicketOpen", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      ticketClosedOrg = Ticket.create! :closed => true, :organization_id => organization1.id, :name => "TicketClosed", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory.id
-      # ----------------------------------------
-      
-      result = Ticket.closed_organization(organization1.id)
-      expect(result).to include(ticketClosedOrg)
-      expect(result).not_to include(ticketOpenOrg)
+      expect(orgsWithID).not_to include(ticketOpenPassOrg)
+      expect(orgsWithID).not_to include(ticketClosedNoOrg)
+      expect(orgsWithID).not_to include(ticketClosedOrg)
+      expect(orgsWithID).not_to include(ticketOpenNoOrg)
+      expect(orgsWithID).not_to include(ticketOpenOrg)
     end
 
   end
+
 
   describe "testing scopes involving region" do
+    let(:regToPass) {create(:region)}
+    let(:ticketPassReg) {create(:ticket, region_id: regToPass.id)}
+    
     it ".region" do
-      # .------- Needed Objects to create Objects for testing ----------.
-      resourceCategory = ResourceCategory.create! :name => "testCategory"
-      # '---------------------------------------------------------------'
-
-      region1 = Region.create! :name => "testRegion1"
-      region2 = Region.create! :name => "testRegion2"
-
-      ticketRegion1 = Ticket.create! :closed => false, :organization_id => nil, :name => "TicketRegion1", :phone =>'+41 44 111 22 33', :region_id => region1.id, :resource_category_id => resourceCategory.id
-      ticketRegion2 = Ticket.create! :closed => false, :organization_id => nil, :name => "TicketRegion2", :phone =>'+41 44 111 22 33', :region_id => region2.id, :resource_category_id => resourceCategory.id
-
-      result = Ticket.region(region1.id)
-      expect(result).to include(ticketRegion1)
-      expect(result).not_to include(ticketRegion2)
-
+      regsWithID = Ticket.region(regToPass.id)
+      expect(regsWithID).to include(ticketPassReg)
+      expect(regsWithID).not_to include(ticketOpenNoOrg) #Any ticket with a different region would work
     end
   end
 
+
   describe "testing scopes involving resource_category" do
+    let(:resCatToPass) {create(:resource_category)}
+    let(:ticketPassResCat) {create(:ticket, resource_category_id: resCatToPass.id)}
+    
     it ".resource_category" do
-      # .------- Needed Objects to create Objects for testing ----------.
-      region = Region.create! :name => "testRegion"
-      # '---------------------------------------------------------------'
-      resourceCategory1 = ResourceCategory.create! :name => "testCategory1"
-      resourceCategory2 = ResourceCategory.create! :name => "testCategory2"
-
-      ticketResourceCategory1 = Ticket.create! :closed => false, :organization_id => nil, :name => "TicketRegion1", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory1.id
-      ticketResourceCategory2 = Ticket.create! :closed => false, :organization_id => nil, :name => "TicketRegion2", :phone =>'+41 44 111 22 33', :region_id => region.id, :resource_category_id => resourceCategory2.id
-
-      result = Ticket.resource_category(resourceCategory1)
-      expect(result).to include(ticketResourceCategory1)
-      expect(result).not_to include(ticketResourceCategory2)
+      resCatWithID = Ticket.resource_category(resCatToPass.id)
+      expect(resCatWithID).to include(ticketPassResCat)
+      expect(resCatWithID).not_to include(ticketOpenNoOrg)
     end
   end
 
