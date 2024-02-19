@@ -1,4 +1,4 @@
-class RegionsController < ApplicationController
+﻿class RegionsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :authenticate_admin
