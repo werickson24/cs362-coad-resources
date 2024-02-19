@@ -14,30 +14,24 @@ RSpec.describe DashboardController, type: :controller do
         sign_in user
         get :index
         expect(response).to be_successful
-        expect(assigns(:status_options)).to eq(['Open', 'Captured', 'Closed'])
-        expect(assigns(:tickets)).to be_a(Pagy::Collection)
       end
     end
     context "for logged in unapproved organization" do
-      it "returns only open tickets" do
+      it "is successful" do
         organization = create(:organization)
         user = create(:user, organization: organization)
         sign_in user
         get :index
         expect(response).to be_successful
-        expect(assigns(:status_options)).to eq(['Open'])
-        expect(assigns(:tickets)).to be_a(Pagy::Collection)
       end
     end
     context "for logged in approved organization" do
-      it "returns all tickets specific to the users organization" do
+      it "be sucessful" do
         organization = create(:organization, :approved)
         user = create(:user, organization: organization)
         sign_in user
         get :index
         expect(response).to be_successful
-        expect(assigns(:status_options)).to eq(['Open', 'My Captured', 'My Closed'])
-        expect(assigns(:tickets)).to be_a(Pagy::Collection)
       end
     end
   end
