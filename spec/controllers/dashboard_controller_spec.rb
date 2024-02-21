@@ -27,7 +27,8 @@ RSpec.describe DashboardController, type: :controller do
     end
     context "for logged in approved organization" do
       it "be sucessful" do
-        organization = create(:organization, :approved)
+        organization = create(:organization)
+        organization.approve
         user = create(:user, organization: organization)
         sign_in user
         get :index
