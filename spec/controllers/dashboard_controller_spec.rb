@@ -18,8 +18,7 @@ RSpec.describe DashboardController, type: :controller do
     end
     context "for logged in unapproved organization" do
       it "is successful" do
-        organization = create(:organization)
-        user = create(:user, organization: organization)
+        user = create(:user, :organization_unapproved)
         sign_in user
         get :index
         expect(response).to be_successful
@@ -27,9 +26,9 @@ RSpec.describe DashboardController, type: :controller do
     end
     context "for logged in approved organization" do
       it "be sucessful" do
-        organization = create(:organization)
-        organization.approve
-        user = create(:user, organization: organization)
+        # organization = create(:organization)
+        # organization.approve
+        user = create(:user, :organization_approved)
         sign_in user
         get :index
         expect(response).to be_successful
