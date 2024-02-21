@@ -6,13 +6,15 @@
     before(:create) { |user| user.skip_confirmation! }
 
 
-    # trait :organization_approved do
-    #   role {:organization}
-    #   organization_id {create(:organization, :approved).id}
-    #
-    # trait :organization_unapproved do
-    #   role {:organization}
-    #   organization_id {create(:organization).id}
+    trait :organization_approved do
+      role {:organization}
+      organization_id {create(:organization, :approved).id}
+    end
+
+    trait :organization_unapproved do
+      role {:organization}
+      organization_id {create(:organization).id}
+    end
 
     trait :admin do
       role{:admin}
@@ -27,6 +29,10 @@
     primary_name {generate(:name)}
     secondary_name {generate(:name)}
     secondary_phone {'+41 44 111 22 33'}
+
+    trait :approved do
+      role{:approved}
+    end
   end
 
   factory :region do
