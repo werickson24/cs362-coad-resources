@@ -2,7 +2,7 @@
 
 RSpec.describe OrganizationsController, type: :controller do
   describe "index" do
-
+    
   end
   describe "new" do
 

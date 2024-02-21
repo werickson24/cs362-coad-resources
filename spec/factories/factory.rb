@@ -6,12 +6,12 @@
     before(:create) { |user| user.skip_confirmation! }
 
     trait :organization_approved do
-      role { :organization }
+      role {:organization}
       organization_id {create(:organization, :approved).id}
     end
 
     trait :organization_unapproved do
-      role { :organization }
+      role {:organization}
       organization_id {create(:organization).id}
     end
 

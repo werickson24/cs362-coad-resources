@@ -16,9 +16,16 @@ RSpec.describe TicketsController, type: :controller do
   describe "release" do
 
   end
-  describe "close" do
-
+  describe "PATCH #close" do
+    context "as a logged out user" do # need one for different type of users.
+      it "redirects to dashboard" do
+        #ticket = create(:ticket)
+        patch :close, params: { id: "DUMMY"}
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
   end
+
   describe "destroy" do
 
   end
