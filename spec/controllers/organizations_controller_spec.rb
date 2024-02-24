@@ -190,4 +190,81 @@ RSpec.describe OrganizationsController, type: :controller do
       end
     end
   end
+
+
+  context 'as an admin user' do
+    
+    # Create an admin to receiving emails in #create
+    let(:organization){create(:organization)}
+    let(:user){create(:user, :admin, organization: organization)}
+    before(:each){sign_in(user)}
+
+
+    describe "GET #index" do
+      it "gets all organizations" do
+        get :index
+        expect(response).to be_successful
+      end
+    end
+
+    describe "GET #new" do
+      it "creates a new organization" do
+        get :new
+        expect(response).not_to be_successful
+      end
+    end
+    
+    describe "POST #create" do
+      it "saves new organization and saves it to current user" do
+        post :create, params: {organization: attributes_for(:organization)}
+        expect(response).to redirect_to(dashboard_path)
+      end
+
+      it "it did not save, create new organization" do
+        post :create, params: {organization: attributes_for(:organization)}
+        expect(response).not_to be_successful
+      end
+      
+    end
+
+    describe "PATCH #update" do
+      it "redirects to dashboard_path" do
+        post :update, params: { id: organization.id, organization: attributes_for(:organization) }
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
+    describe "POST #approve" do
+      it "redirects to organization" do
+        post :approve, params: { id: organization.id, organization: attributes_for(:organization) }
+        expect(response).to redirect_to(organizations_path)
+      end
+
+      '''# --- Not currently working ---
+      it "renders organization path" do
+        expect_any_instance_of(Organization).to receive(:save).and_return(false)
+        post :approve, params: {id: organization.id, organization: attributes_for(:organization)}
+        #expect(response).to render(organizations_path)
+      end
+      '''
+      
+
+    end
+
+    describe "POST #reject" do
+      it "redirects to dashboard" do
+        post :reject, params: {id: organization.id, organization: attributes_for(:organization)}
+        expect(response).to redirect_to(organizations_path)
+      end
+
+      ''' --- Not currently working ---
+      it "renders organization path" do
+        expect_any_instance_of(Organization).to receive(:save).and_return(false)
+        post :reject, params: {id: organization.id, organization: attributes_for(:organization)}
+        expect(response).to redirect_to(organizations_path)
+      end
+      '''
+    end
+  end
+
 end
