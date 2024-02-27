@@ -2,7 +2,7 @@
 
 RSpec.describe OrganizationsController, type: :controller do
   context 'as an organization user without an Organization' do
-    
+
     # Create an admin to receiving emails in #create
     let(:admin){create(:user, :admin)}
     before(:each){sign_in(admin)}
@@ -25,7 +25,7 @@ RSpec.describe OrganizationsController, type: :controller do
         expect(response).to be_successful
       end
     end
-    
+
     describe "POST #create" do
       it "saves new organization and saves it to current user" do
         post :create, params: {organization: attributes_for(:organization)}
@@ -37,7 +37,7 @@ RSpec.describe OrganizationsController, type: :controller do
         post :create, params: {organization: attributes_for(:organization)}
         expect(response).to be_successful
       end
-      
+
     end
 
     describe "PATCH #update" do
@@ -66,7 +66,7 @@ RSpec.describe OrganizationsController, type: :controller do
 
 
   context 'as an organization user with an approved Organization' do
-    
+
     # Create an admin to receiving emails in #create
     let(:admin){create(:user, :admin)}
     before(:each){sign_in(admin)}
@@ -89,7 +89,7 @@ RSpec.describe OrganizationsController, type: :controller do
         expect(response).not_to be_successful
       end
     end
-    
+
     describe "POST #create" do
       it "saves new organization and saves it to current user" do
         post :create, params: {organization: attributes_for(:organization)}
@@ -101,7 +101,7 @@ RSpec.describe OrganizationsController, type: :controller do
         post :create, params: {organization: attributes_for(:organization)}
         expect(response).not_to be_successful
       end
-      
+
     end
 
     describe "PATCH #update" do
@@ -130,7 +130,7 @@ RSpec.describe OrganizationsController, type: :controller do
 
 
   context 'as an organization user with an un-approved Organization' do
-    
+
     # Create an admin to receiving emails in #create
     let(:admin){create(:user, :admin)}
     before(:each){sign_in(admin)}
@@ -153,7 +153,7 @@ RSpec.describe OrganizationsController, type: :controller do
         expect(response).not_to be_successful
       end
     end
-    
+
     describe "POST #create" do
       it "saves new organization and saves it to current user" do
         post :create, params: {organization: attributes_for(:organization)}
@@ -165,7 +165,7 @@ RSpec.describe OrganizationsController, type: :controller do
         post :create, params: {organization: attributes_for(:organization)}
         expect(response).not_to be_successful
       end
-      
+
     end
 
     describe "PATCH #update" do
@@ -193,7 +193,7 @@ RSpec.describe OrganizationsController, type: :controller do
 
 
   context 'as an admin user' do
-    
+
     # Create an admin to receiving emails in #create
     let(:organization){create(:organization)}
     let(:user){create(:user, :admin, organization: organization)}
@@ -213,7 +213,7 @@ RSpec.describe OrganizationsController, type: :controller do
         expect(response).not_to be_successful
       end
     end
-    
+
     describe "POST #create" do
       it "saves new organization and saves it to current user" do
         post :create, params: {organization: attributes_for(:organization)}
@@ -224,7 +224,7 @@ RSpec.describe OrganizationsController, type: :controller do
         post :create, params: {organization: attributes_for(:organization)}
         expect(response).not_to be_successful
       end
-      
+
     end
 
     describe "PATCH #update" do
@@ -240,14 +240,17 @@ RSpec.describe OrganizationsController, type: :controller do
         expect(response).to redirect_to(organizations_path)
       end
 
-      '''# --- Not currently working ---
+      # --- Not currently working ---
       it "renders organization path" do
         expect_any_instance_of(Organization).to receive(:save).and_return(false)
         post :approve, params: {id: organization.id, organization: attributes_for(:organization)}
+        #expect(response).to be_successful
+        #expect(response).to redirect_to(approve_organization_path)
+        expect(response).to redirect_to(organization_path(id: organization.id))
         #expect(response).to render(organizations_path)
       end
-      '''
-      
+
+
 
     end
 
@@ -257,13 +260,13 @@ RSpec.describe OrganizationsController, type: :controller do
         expect(response).to redirect_to(organizations_path)
       end
 
-      ''' --- Not currently working ---
+      # --- Not currently working ---
       it "renders organization path" do
         expect_any_instance_of(Organization).to receive(:save).and_return(false)
         post :reject, params: {id: organization.id, organization: attributes_for(:organization)}
-        expect(response).to redirect_to(organizations_path)
+        expect(response).to redirect_to(organization_path(id: organization.id))
+        #expect(response).to redirect_to(organizations_path)
       end
-      '''
     end
   end
 

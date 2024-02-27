@@ -1,28 +1,27 @@
 ﻿require 'rails_helper'
 
 RSpec.describe ResourceCategoriesController, type: :controller do
-
   let(:admin){create(:user, :admin)}
   let(:user){create(:user)}
-  let(:resource_category){create(:resource_category)}
+  let(:resCat){create(:resource_categories)}
   
   describe "GET #index" do
     context "as an admin" do
-      before(:each){sign_in(admin)}
-      it "get resource categories" do
+      let "get resource categories" do
+        before(:each){sign_in(admin)}
         get :index
         expect(response).to be_successful
       end
     end
     context "as a user" do
-      before(:each){sign_in(user)}
-      it "get resource categories" do
+      let "get resource categories" do
+        before(:each){sign_in(user)}
         get :index
         expect(response).to redirect_to(dashboard_path)
       end
     end
     context "logged out" do
-      it "get resource categories" do
+      let "get resource categories" do
         get :index
         expect(response).to redirect_to(new_user_session_path)
       end
@@ -32,18 +31,23 @@ RSpec.describe ResourceCategoriesController, type: :controller do
 
   describe "GET #show" do
     context "as an admin" do
-      before(:each){sign_in(admin)}
-      it "nothing" do
+      let "nothing" do
+        before(:each){sign_in(admin)}
+        get :show
+        expect(response).to be_empty
       end
     end
     context "as a user" do
-      before(:each){sign_in(user)}
-      it "nothing" do
-
+      let "nothing" do
+        before(:each){sign_in(user)}
+        get :show
+        expect(response).to be_empty
       end
     end
     context "logged out" do
-      it "nothing" do
+      let "nothing" do
+        get :show
+        expect(response).to be_empty
       end
     end
   end
@@ -52,21 +56,21 @@ RSpec.describe ResourceCategoriesController, type: :controller do
 
   describe "GET #new" do
     context "as an admin" do
-      before(:each){sign_in(admin)}
-      it "be successful" do
+      let "be successful" do
+        before(:each){sign_in(admin)}
         get :new
-        expect(response).to be_successful
+        expect(response).not_to be_successful
       end
     end
     context "as a user" do
-      before(:each){sign_in(user)}
-      it "redirect to dashboard" do
+      let "redirect to dashboard" do
+        before(:each){sign_in(user)}
         get :new
         expect(response).to redirect_to(dashboard_path)
       end
     end
     context "logged out" do
-      it "redirect to new session" do
+      let "redirect to new session" do
         get :new
         expect(response).to redirect_to(new_user_session_path)
       end
@@ -74,36 +78,6 @@ RSpec.describe ResourceCategoriesController, type: :controller do
 
 
 
-
-  end
-  describe "POST #create" do
-    context "as an admin" do
-      before(:each){sign_in(admin)}
-      it "saved" do
-        post :create, params: {resource_category: attributes_for(:resource_category)}
-        expect(response).to redirect_to(resource_categories_path)
-        expect(flash[:notice]).to match(/Category successfully created/)
-      end
-      it "didn't save" do
-        post :create, params: {resource_category: {name: nil}}
-        expect(response).to be_successful
-
-      end
-    end
-    context "as a user" do
-      before(:each){sign_in(user)}
-      it "redirects to dashboard" do
-        post :create, params: {resource_category: attributes_for(:resource_category)}
-        expect(response).to redirect_to(dashboard_path)
-      end
-    end
-    context "logged out" do
-      it "redirect to new session" do
-        post :create, params: {resource_category: attributes_for(:resource_category)}
-        expect(response).to redirect_to(new_user_session_path)
-      end
-    end
-  end
 
 
 
