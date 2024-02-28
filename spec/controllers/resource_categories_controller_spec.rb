@@ -3,7 +3,7 @@
 RSpec.describe ResourceCategoriesController, type: :controller do
   let(:admin){create(:user, :admin)}
   let(:user){create(:user)}
-  let(:resCat){create(:resource_categories)}
+  let(:resource_category){create(:resource_category)}
 
   describe "GET #index" do
     context "as an admin" do
@@ -200,7 +200,7 @@ RSpec.describe ResourceCategoriesController, type: :controller do
     context "as an admin" do
       before(:each){sign_in(admin)}
       it "delete resource category" do
-        delete :destroy, params:{id: resCatDelete.id}
+        delete :destroy, params:{id: resource_category.id}
         expect(response).to redirect_to(resource_categories_path)
         expect(flash[:notice]).to match(/Associated tickets now belong to the 'Unspecified' category/)
 
@@ -209,13 +209,13 @@ RSpec.describe ResourceCategoriesController, type: :controller do
     context "as a user" do
       before(:each){sign_in(user)}
       it "nothing" do
-        delete :destroy, params:{id: resCatDelete.id}
+        delete :destroy, params:{id: resource_category.id}
         expect(response).to redirect_to(dashboard_path)
       end
     end
     context "logged out" do
       it "nothing" do
-        delete :destroy, params:{id: resCatDelete.id}
+        delete :destroy, params:{id: resource_category.id}
         expect(response).to redirect_to(new_user_session_path)
       end
     end
