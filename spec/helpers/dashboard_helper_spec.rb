@@ -12,10 +12,10 @@ require 'rails_helper'
 # end
 RSpec.describe DashboardHelper, type: :helper do
 
-  let(:orgRejected){create(:user, :organization_rejected)}
-  let(:admin){create(:user, :admin)}
-  let(:orgUnapproved){create(:user, :organization_unapproved)}
-  let(:orgApproved){create(:user, :organization_approved)}
+  let(:orgRejected){build(:user, :organization_rejected)}
+  let(:admin){build(:user, :admin)}
+  let(:orgUnapproved){build(:user, :organization_unapproved)}
+  let(:orgApproved){build(:user, :organization_approved)}
 
   describe "tests #dashboard_for" do
     it "is rejected organization" do
