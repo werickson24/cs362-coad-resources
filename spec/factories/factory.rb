@@ -15,6 +15,11 @@
       organization_id {create(:organization).id}
     end
 
+    trait :organization_rejected do
+      role {:organization}
+      organization_id {create(:organization, :rejected).id}
+    end
+    
     trait :admin do
       role{:admin}
     end
