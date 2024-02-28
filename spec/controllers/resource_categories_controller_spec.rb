@@ -4,7 +4,7 @@ RSpec.describe ResourceCategoriesController, type: :controller do
   let(:admin){create(:user, :admin)}
   let(:user){create(:user)}
   let(:resCat){create(:resource_categories)}
-  
+
   describe "GET #index" do
     context "as an admin" do
       let "get resource categories" do
@@ -75,7 +75,7 @@ RSpec.describe ResourceCategoriesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
     end
-
+  end
 
 
 
