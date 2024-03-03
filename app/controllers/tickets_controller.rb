@@ -1,4 +1,4 @@
-class TicketsController < ApplicationController
+﻿class TicketsController < ApplicationController
   include TicketsHelper
 
   before_action :authenticate_admin, only: :destroy
@@ -29,7 +29,7 @@ class TicketsController < ApplicationController
 
   def capture
     return redirect_to dashboard_path unless current_user&.organization&.approved?
-
+    #puts(TicketService.capture_ticket(params[:id], current_user))
     if TicketService.capture_ticket(params[:id], current_user) == :ok
       redirect_to dashboard_path << '#tickets:open'
     else

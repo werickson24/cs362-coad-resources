@@ -1,4 +1,4 @@
-module TicketService
+﻿module TicketService
   class << self
     def release_ticket(id, user)
       catch :error do
@@ -38,6 +38,10 @@ module TicketService
     end
 
     def user_can_capture?(ticket, user)
+      # puts("DEBUG user_can_capture?")
+      # puts(ticket.organization_id.nil?)
+      # puts(user&.organization&.approved?)
+      # puts(ticket.organization_id.nil? && user&.organization&.approved?)
       ticket.organization_id.nil? && user&.organization&.approved?
     end
 
