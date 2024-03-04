@@ -35,4 +35,36 @@ RSpec.describe DashboardController, type: :controller do
       end
     end
   end
+  describe "get ticket type" do
+    it "open tickets" do
+      user = create(:user, :admin)
+      sign_in user
+      get :index, params: {status: 'Open'}
+      expect(response).to be_successful
+    end
+    it "closed tickets" do
+      user = create(:user, :admin)
+      sign_in user
+      get :index, params: {status: 'Closed'}
+      expect(response).to be_successful
+    end
+    it "captured tickets" do
+      user = create(:user, :admin)
+      sign_in user
+      get :index, params: {status: 'Captured'}
+      expect(response).to be_successful
+    end
+    it "my captured tickets" do
+      user = create(:user, :admin)
+      sign_in user
+      get :index, params: {status: 'My Captured'}
+      expect(response).to be_successful
+    end
+    it "my closed tickets" do
+      user = create(:user, :admin)
+      sign_in user
+      get :index, params: {status: 'My Closed'}
+      expect(response).to be_successful
+    end
+  end
 end
