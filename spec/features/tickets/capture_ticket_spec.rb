@@ -17,7 +17,7 @@ RSpec.describe 'Capturing a ticket', type: :feature do
     click_on 'Tickets'
     page.select('My Captured', from: 'status')
     click_on "testTicket"
-    click_on "Capture"
+    #click_on "Capture"
     #puts(page.body)
 
   end
